@@ -13,25 +13,6 @@ from mininet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller
 
-# Add an option to xrdb to show the correct windows titles on xterm (xrdb is reset at every host OS boot)
-def merge_xresources(script_dir):
-    process = subprocess.Popen(
-        'sudo -u vagrant bash -c "xrdb -query | grep \'xterm\\*allowTitleOps\'"',
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-    )
-    stdout, stderr = process.communicate()
-    xrdb_grep_split_output = stdout.decode("utf-8").split()
-
-    if len(xrdb_grep_split_output) == 0 or xrdb_grep_split_output[1] == 'true':
-        xresources_filepath = os.path.join(script_dir, 'setup', 'Xresources')
-        subprocess.Popen(
-            'sudo -u vagrant bash -c "xrdb -merge {}"'.format(xresources_filepath),
-            shell=True
-        )
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Script for running the video streaming app.')
     parser.add_argument('--link-bw', metavar='link_bw', type=float, nargs='?', default=10,
@@ -51,9 +32,6 @@ if __name__ == '__main__':
     shared_dir = os.path.join(script_dir, 'shared')
     os.makedirs(shared_dir, exist_ok=True)
 
-    # Merge Xresources to show the correct windows titles on xterm
-    merge_xresources(script_dir)
-
     # Set the logging level
     setLogLevel('info')
 
@@ -68,10 +46,10 @@ if __name__ == '__main__':
     # Add the hosts (server and client) to the network
     info('*** Creating hosts\n')
     server = net.addDockerHost(
-        'server', dimage='dev_test', ip='10.0.0.1', docker_args={'hostname': 'server'}
+        'server', dimage='video_streaming_server', ip='10.0.0.1', docker_args={'hostname': 'server'}
     )
     client = net.addDockerHost(
-        'client', dimage='dev_test', ip='10.0.0.2', docker_args={'hostname': 'client'}
+        'client', dimage='video_streaming_client', ip='10.0.0.2', docker_args={'hostname': 'client'}
     )
 
     # Add switches and links to the network
@@ -102,6 +80,10 @@ if __name__ == '__main__':
             }
         }
     )
+
+    # Ensure Docker containers are running
+    subprocess.run('docker start streaming_server', shell=True)
+    subprocess.run('docker start streaming_client', shell=True)
 
     # Perform the video streaming and packet capture
     subprocess.run('docker exec -d streaming_server /home/stream_video.sh', shell=True)
