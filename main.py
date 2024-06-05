@@ -15,15 +15,22 @@ from mininet.node import Controller
 
 # Add an option to xrdb to show the correct windows titles on xterm (xrdb is reset at every host OS boot)
 def merge_xresources(script_dir):
-    xrdb_grep_split_output = subprocess.run(
-        'sudo -u vagrant bash -c'.split() + ['xrdb -query | grep "xterm\\*allowTitleOps"'], capture_output=True
-    ).stdout.decode("utf-8").split()
+    process = subprocess.Popen(
+        'sudo -u vagrant bash -c "xrdb -query | grep \'xterm\\*allowTitleOps\'"',
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    stdout, stderr = process.communicate()
+    xrdb_grep_split_output = stdout.decode("utf-8").split()
 
     if len(xrdb_grep_split_output) == 0 or xrdb_grep_split_output[1] == 'true':
         xresources_filepath = os.path.join(script_dir, 'setup', 'Xresources')
-        subprocess.run(
-            'sudo -u vagrant bash -c'.split() + ['xrdb -merge {}'.format(xresources_filepath)], capture_output=True
+        subprocess.Popen(
+            'sudo -u vagrant bash -c "xrdb -merge {}"'.format(xresources_filepath),
+            shell=True
         )
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Script for running the video streaming app.')
