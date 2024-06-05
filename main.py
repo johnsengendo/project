@@ -92,28 +92,66 @@ def main():
 
     # Ensure Docker containers are running
     info('*** Starting Docker containers\n')
-    subprocess.run('docker start streaming_server', shell=True)
-    subprocess.run('docker start streaming_client', shell=True)
+    try:
+        subprocess.run('docker start streaming_server', check=True, shell=True)
+        info('*** Started streaming_server container\n')
+    except subprocess.CalledProcessError as e:
+        info(f'Error starting streaming_server container: {e}')
+
+    try:
+        subprocess.run('docker start streaming_client', check=True, shell=True)
+        info('*** Started streaming_client container\n')
+    except subprocess.CalledProcessError as e:
+        info(f'Error starting streaming_client container: {e}')
 
     # Perform the video streaming and packet capture
     info('*** Starting video streaming and packet capture\n')
-    subprocess.run('docker exec -d streaming_server /home/stream_video.sh', shell=True)
-    subprocess.run('docker exec -d streaming_client /home/get_video_stream.sh', shell=True)
+    try:
+        subprocess.run('docker exec -d streaming_server /home/stream_video.sh', check=True, shell=True)
+        info('*** Started video streaming on streaming_server\n')
+    except subprocess.CalledProcessError as e:
+        info(f'Error starting video streaming on streaming_server: {e}')
+
+    try:
+        subprocess.run('docker exec -d streaming_client /home/get_video_stream.sh', check=True, shell=True)
+        info('*** Started packet capture on streaming_client\n')
+    except subprocess.CalledProcessError as e:
+        info(f'Error starting packet capture on streaming_client: {e}')
 
     # Wait for the user to stop the program
     input("Press Enter to stop the video streaming and packet capture...")
 
     # Stop the video streaming and packet capture
     info('*** Stopping video streaming and packet capture\n')
-    subprocess.run('docker exec streaming_server pkill -f stream_video.sh', shell=True)
-    subprocess.run('docker exec streaming_client pkill -f get_video_stream.sh', shell=True)
+    try:
+        subprocess.run('docker exec streaming_server pkill -f stream_video.sh', check=True, shell=True)
+        info('*** Stopped video streaming on streaming_server\n')
+    except subprocess.CalledProcessError as e:
+        info(f'Error stopping video streaming on streaming_server: {e}')
+
+    try:
+        subprocess.run('docker exec streaming_client pkill -f get_video_stream.sh', check=True, shell=True)
+        info('*** Stopped packet capture on streaming_client\n')
+    except subprocess.CalledProcessError as e:
+        info(f'Error stopping packet capture on streaming_client: {e}')
 
     # Perform the closing operations
     info('*** Stopping Docker containers and network\n')
-    mgr.removeContainer('streaming_server')
-    mgr.removeContainer('streaming_client')
+    try:
+        mgr.removeContainer('streaming_server')
+        info('*** Removed streaming_server container\n')
+    except Exception as e:
+        info(f'Error removing streaming_server container: {e}')
+
+    try:
+        mgr.removeContainer('streaming_client')
+        info('*** Removed streaming_client container\n')
+    except Exception as e:
+        info(f'Error removing streaming_client container: {e}')
+    
     net.stop()
     mgr.stop()
+    info('*** Network stopped\n')
 
 if __name__ == '__main__':
     try:
