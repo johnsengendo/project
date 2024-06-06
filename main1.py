@@ -63,7 +63,7 @@ if __name__ == '__main__':
     parser.add_argument('--link-bw', metavar='link_bw', type=float, nargs='?', default=10,
                         help='initial bandwidth of the link connecting the two switches in the topology (the bandwidth '
                              'is defined in Mbit/s).')
-    parser.add_argument('--link-delay', metavar='link_delay', type=float, nargs='?', default10,
+    parser.add_argument('--link-delay', metavar='link_delay', type=float, nargs='?', default=10,
                         help='initial delay of the link connecting the two switches in the topology (the delay is '
                              'defined in ms).')
     parser.add_argument('--autotest', dest='autotest', action='store_const', const=True, default=False,
