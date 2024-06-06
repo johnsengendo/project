@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import argparse
@@ -7,24 +7,26 @@ import subprocess
 import sys
 import time
 
-from comnetsemu.cli import CLI, spawnXtermDocker
+from comnetsemu.cli import CLI
 from comnetsemu.net import Containernet, VNFManager
 from mininet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller
 
 
-# add an option to xrdb to show the correct windows titles on xterm (xrdb is reset at every host OS boot)
+# Placeholder function for merging Xresources without involving xterm display
 def merge_xresources(script_dir):
-    xrdb_grep_split_output = subprocess.run(
-        'sudo -u vagrant bash -c'.split() + ['xrdb -query | grep "xterm\\*allowTitleOps"'], capture_output=True
-    ).stdout.decode("utf-8").split()
-
-    if len(xrdb_grep_split_output) == 0 or xrdb_grep_split_output[1] == 'true':
-        xresources_filepath = os.path.join(script_dir, 'setup', 'Xresources')
-        subprocess.run(
-            'sudo -u vagrant bash -c'.split() + ['xrdb -merge {}'.format(xresources_filepath)], capture_output=True
-        )
+    try:
+        # Command to execute, replace with actual logic if needed
+        cmd = ['echo', 'Merging Xresources not involving xterm display']
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result.returncode == 0:
+            output = result.stdout.decode()
+            print(output)
+        else:
+            print(f"Error: {result.stderr.decode()}")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
 
 
 # check if the string represents a number
@@ -85,7 +87,7 @@ if __name__ == '__main__':
     setLogLevel('info')
 
     # instantiate the network and the VNF manager objects
-    net = Containernet(controller=Controller, link=TCLink, xterms=False)
+    net = Containernet(controller=Controller, link=TCLink)
     mgr = VNFManager(net)
 
     # add the controller to the network
@@ -95,10 +97,10 @@ if __name__ == '__main__':
     # add the hosts (server and client) to the network
     info('*** Creating hosts\n')
     server = net.addDockerHost(
-        'server', dimage='dev_test', ip='10.0.0.1', docker_args={'hostname': 'server'}
+        'server', dimage='video_streaming_server', ip='10.0.0.1', docker_args={'hostname': 'server'}
     )
     client = net.addDockerHost(
-        'client', dimage='dev_test', ip='10.0.0.2', docker_args={'hostname': 'client'}
+        'client', dimage='video_streaming_client', ip='10.0.0.2', docker_args={'hostname': 'client'}
     )
 
     # add switches and links to the network
@@ -130,12 +132,16 @@ if __name__ == '__main__':
         }
     )
 
+    # Start video streaming server and client using .sh scripts
+    server_script_path = os.path.join('/home', 'stream_video.sh')
+    client_script_path = os.path.join('/home', 'get_video_stream.sh')
+    server_cmd = ['docker', 'exec', 'server', 'bash', '-c', f'cd /home && ./stream_video.sh']
+    client_cmd = ['docker', 'exec', 'client', 'bash', '-c', f'cd /home && ./get_video_stream.sh']
+    server_process = subprocess.Popen(server_cmd)
+    client_process = subprocess.Popen(client_cmd)
+
     # if it is an auto-test execution, skip the interactive part
     if not autotest:
-        # open a terminal on the streaming service containers (both server and client)
-        spawnXtermDocker('streaming_server')
-        spawnXtermDocker('streaming_client')
-
         # let the user choose the next operation
         choice = ''
         open_plot_processes = []
@@ -145,7 +151,7 @@ if __name__ == '__main__':
             print('1) change the middle link properties (bandwidth and delay)')
             print('2) open Mininet CLI')
             print('3) plot inter-sending/interarrival times (the previous plots will be closed)')
-            print('q) exit\n')
+            print('q) stop streaming and exit\n')
             choice = input('Enter your choice: ')
             print('')
 
@@ -176,7 +182,12 @@ if __name__ == '__main__':
                 open_plot_processes.append(subprocess.Popen(exec_string.format('server', 'server').split(' ')))
                 open_plot_processes.append(subprocess.Popen(exec_string.format('client', 'client').split(' ')))
                 time.sleep(3)
-            elif choice != 'q':
+            elif choice == 'q':
+                print('Stopping streaming and exiting...')
+                server_process.terminate()
+                client_process.terminate()
+                break
+            else:
                 print('Unknown choice: \'{}\''.format(choice))
 
         # close processes that are still open
