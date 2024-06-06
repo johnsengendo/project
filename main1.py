@@ -7,7 +7,7 @@ import subprocess
 import sys
 import time
 
-from comnetsemu.cli import CLI, spawnXtermDocker
+from comnetsemu.cli import CLI
 from comnetsemu.net import Containernet, VNFManager
 from mininet.link import TCLink
 from mininet.log import info, setLogLevel
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     setLogLevel('info')
 
     # instantiate the network and the VNF manager objects
-    net = Containernet(controller=Controller, link=TCLink, xterms=False)
+    net = Containernet(controller=Controller, link=TCLink)
     mgr = VNFManager(net)
 
     # add the controller to the network
@@ -97,10 +97,10 @@ if __name__ == '__main__':
     # add the hosts (server and client) to the network
     info('*** Creating hosts\n')
     server = net.addDockerHost(
-        'server', dimage='dev_test', ip='10.0.0.1', docker_args={'hostname': 'server'}
+        'server', dimage='video_streaming_server', ip='10.0.0.1', docker_args={'hostname': 'server'}
     )
     client = net.addDockerHost(
-        'client', dimage='dev_test', ip='10.0.0.2', docker_args={'hostname': 'client'}
+        'client', dimage='video_streaming_client', ip='10.0.0.2', docker_args={'hostname': 'client'}
     )
 
     # add switches and links to the network
@@ -132,12 +132,26 @@ if __name__ == '__main__':
         }
     )
 
+    # Start tcpdump on server and client
+    server_pcap = os.path.join(shared_dir, 'server_out.pcap')
+    client_pcap = os.path.join(shared_dir, 'client_out.pcap')
+    server_tcpdump_cmd = ['docker', 'exec', 'server', 'tcpdump', '-i', 'eth0', '-w', '/home/shared/server_out.pcap']
+    client_tcpdump_cmd = ['docker', 'exec', 'client', 'tcpdump', '-i', 'eth0', '-w', '/home/shared/client_out.pcap']
+    server_tcpdump_process = subprocess.Popen(server_tcpdump_cmd)
+    client_tcpdump_process = subprocess.Popen(client_tcpdump_cmd)
+
+    time.sleep(2)  # give tcpdump time to start
+
+    # Start video streaming server and client using .sh scripts
+    server_script_path = os.path.join('/home', 'stream_video.sh')
+    client_script_path = os.path.join('/home', 'get_video_stream.sh')
+    server_cmd = ['docker', 'exec', 'server', 'bash', '-c', f'cd /home && ./stream_video.sh']
+    client_cmd = ['docker', 'exec', 'client', 'bash', '-c', f'cd /home && ./get_video_stream.sh']
+    server_process = subprocess.Popen(server_cmd)
+    client_process = subprocess.Popen(client_cmd)
+
     # if it is an auto-test execution, skip the interactive part
     if not autotest:
-        # open a terminal on the streaming service containers (both server and client)
-        spawnXtermDocker('streaming_server')
-        spawnXtermDocker('streaming_client')
-
         # let the user choose the next operation
         choice = ''
         open_plot_processes = []
@@ -147,7 +161,7 @@ if __name__ == '__main__':
             print('1) change the middle link properties (bandwidth and delay)')
             print('2) open Mininet CLI')
             print('3) plot inter-sending/interarrival times (the previous plots will be closed)')
-            print('q) exit\n')
+            print('q) stop streaming and exit\n')
             choice = input('Enter your choice: ')
             print('')
 
@@ -178,7 +192,14 @@ if __name__ == '__main__':
                 open_plot_processes.append(subprocess.Popen(exec_string.format('server', 'server').split(' ')))
                 open_plot_processes.append(subprocess.Popen(exec_string.format('client', 'client').split(' ')))
                 time.sleep(3)
-            elif choice != 'q':
+            elif choice == 'q':
+                print('Stopping streaming and exiting...')
+                server_process.terminate()
+                client_process.terminate()
+                server_tcpdump_process.terminate()
+                client_tcpdump_process.terminate()
+                break
+            else:
                 print('Unknown choice: \'{}\''.format(choice))
 
         # close processes that are still open
