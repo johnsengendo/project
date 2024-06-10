@@ -79,7 +79,7 @@ if __name__ == '__main__':
     os.makedirs(shared_dir, exist_ok=True)
 
     # merge Xresources to show the correct windows titles on xterm
-    merge_xresources(script_dir)
+    # merge_xresources(script_dir)
 
     # set the logging level
     setLogLevel('info')
