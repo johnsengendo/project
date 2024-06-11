@@ -51,6 +51,18 @@ if [ ${capture_traffic} == "true" ]; then
     client_tcpdump_pid=$!
     sleep 2
 fi
+# Function to find and kill process using the RTMP port
+function kill_process_on_port {
+    port=$1
+    pid=$(lsof -ti tcp:${port})
+    if [ -n "$pid" ]; then
+        echo "Killing process $pid using port $port"
+        kill -9 $pid
+    fi
+}
+
+# Terminate any process using port 1935
+kill_process_on_port 1935
 
 # Stream the specified video
 ffmpeg -re -i "${video}" -c:v libx264 -preset ultrafast -tune zerolatency -b:v 1M -maxrate 1M -bufsize 1M \
