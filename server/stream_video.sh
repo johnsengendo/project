@@ -54,11 +54,11 @@ fi
 
 # Stream the specified video
 ffmpeg -re -i "${video}" -c:v libx264 -preset ultrafast -tune zerolatency -b:v 1M -maxrate 1M -bufsize 1M \
-       -c:a aac -b:a 128k -ar 44100 -f flv -timeout 10 rtmp://localhost:1935/live/video.flv
+       -c:a aac -b:a 128k -ar 44100 -f flv -timeout 10 rtmp://localhost:1936/live/video.flv
 
 # Get the video stream and save it to the specified file
 start_time=$(date +%s)
-ffmpeg -i rtmp://10.0.0.1:1935/live/video.flv -probesize 80000 -analyzeduration 15 -c:a copy -c:v copy -timeout 10 "${out_file}"
+ffmpeg -i rtmp://10.0.0.1:1936/live/video.flv -probesize 80000 -analyzeduration 15 -c:a copy -c:v copy -timeout 10 "${out_file}"
 run_time=$(($(date +%s) - start_time))
 
 # Stop tcpdump capture, if required
