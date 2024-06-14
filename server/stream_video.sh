@@ -66,7 +66,7 @@ kill_process_on_port 1935
 
 # Stream the specified video
 ffmpeg -re -i "${video}" -c:v libx264 -preset ultrafast -tune zerolatency -b:v 1M -maxrate 1M -bufsize 1M \
-       -c:a aac -b:a 128k -ar 44100 -f flv -timeout 10 rtmp://localhost:1940/live/video.flv
+       -c:a aac -b:a 128k -ar 44100 -f flv -timeout 10 rtmp://localhost:1935/live/video.flv
 
 # Get the video stream and save it to the specified file
 start_time=$(date +%s)
