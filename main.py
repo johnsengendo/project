@@ -79,7 +79,7 @@ if __name__ == '__main__':
     os.makedirs(shared_dir, exist_ok=True)
 
     # merge Xresources to show the correct windows titles on xterm
-    merge_xresources(script_dir)
+    #merge_xresources(script_dir)
 
     # set the logging level
     setLogLevel('info')
@@ -133,8 +133,8 @@ if __name__ == '__main__':
     # if it is an auto-test execution, skip the interactive part
     if not autotest:
         # open a terminal on the streaming service containers (both server and client)
-        spawnXtermDocker('streaming_server')
-        spawnXtermDocker('streaming_client')
+        #spawnXtermDocker('streaming_server')
+        #spawnXtermDocker('streaming_client')
 
         # let the user choose the next operation
         choice = ''
