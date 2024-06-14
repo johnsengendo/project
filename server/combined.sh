@@ -63,13 +63,13 @@ run_time=$(($(date +%s) - start_time))
 
 # Stop tcpdump capture, if required
 if [ ${capture_traffic} == "true" ]; then
-    ./tcpdump_utils/stop_capture1.sh
+    ./tcpdump_utils/stop_capture.sh
     sleep 3
 fi
 
 # Stop tcpdump capture, if required
 if [ ${capture_traffic} == "true" ]; then
-    ./tcpdump_utils/stop_capture2.sh
+    ./tcpdump_utils/stop_capture.sh
     sleep 3
 fi
 
