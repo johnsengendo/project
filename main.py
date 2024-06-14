@@ -136,7 +136,7 @@ if __name__ == '__main__':
         #spawnXtermDocker('streaming_server')
         #spawnXtermDocker('streaming_client')
         #subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash'])
-        subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./stream_video.sh'])
+        subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./combined.sh'])
 
         # let the user choose the next operation
         choice = ''
