@@ -132,7 +132,7 @@ if __name__ == '__main__':
 
     # if it is an auto-test execution, skip the interactive part
     if not autotest:
-        subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./stream_server.sh'])
+        subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./stream_video.sh'])
         # open a terminal on the streaming service containers (both server and client)
         #spawnXtermDocker('streaming_server')
         #spawnXtermDocker('streaming_client')
