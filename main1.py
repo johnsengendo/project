@@ -123,9 +123,11 @@ if __name__ == '__main__':
     if not autotest:
         #subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./stream_video.sh'])
         def start_server():
+                subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'chmod +x /home/combined_server_client1.sh'])
                 subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./combined_server_client1.sh -s'])
 
         def start_client():
+                 subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'chmod +x /home/combined_server_client1.sh'])
                  subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && ./combined_server_client1.sh -c'])
 
 
