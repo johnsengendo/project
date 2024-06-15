@@ -40,7 +40,10 @@ fi
 
 # Get the video stream and save it to the specified file
 start_time=$(date +%s)
-ffmpeg -i rtmp://10.0.0.1:1935/live/video.flv -probesize 80000 -analyzeduration 15 -c:a copy -c:v copy "${out_file}"
+#ffmpeg -i rtmp://10.0.0.1:1935/live/video.flv -probesize 80000 -analyzeduration 15 -c:a copy -c:v copy "${out_file}"
+
+ffmpeg -i rtmp://10.0.0.1:1935/live/video.flv -c copy -f flv stream_output.flv 2>&1 | awk '/Stream mapping:/{flag=1; next} flag'
+
 run_time=$(($(date +%s) - start_time))
 
 # Stop tcpdump capture, if required
