@@ -95,10 +95,10 @@ if __name__ == '__main__':
     # if it is an auto-test execution, skip the interactive part
     if not autotest:
         def start_server():
-            subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./stream_video.py'])
+            subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && ./stream_video.sh'])
 
         def start_client():
-            subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && ./get_video_stream.py'])
+            subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && ./get_video_stream.sh'])
 
         server_thread = threading.Thread(target=start_server)
         client_thread = threading.Thread(target=start_client)
