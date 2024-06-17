@@ -10,7 +10,7 @@ function usage {
 }
 
 # Parse the script arguments
-video="videos/big_buck_bunny_720p_5mb.mp4"
+video="videos/5G Smart Networks Digital Twin for Network.mp4"
 loops_number=-1
 capture_traffic="true"
 while getopts 'i:odh' OPTION; do
