@@ -14,27 +14,6 @@ from mininet.link import TCLink
 from mininet.log import info, setLogLevel
 from mininet.node import Controller
 
-
-# check if the string represents a number
-def is_number(string):
-    check_ok = True
-    try:
-        float(string)
-    except ValueError:
-        check_ok = False
-
-    return check_ok
-
-
-# prompt the user for a new property value
-def get_property_new_value(string_for_input, old_value):
-    new_value = None
-    while new_value is None or (new_value != '' and not is_number(new_value)):
-        new_value = input(string_for_input)
-
-    return float(new_value) if new_value != '' else old_value
-
-
 # close the open processes
 def close_open_processes(processes):
     for process in processes:
@@ -46,19 +25,13 @@ def close_open_processes(processes):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Script for running the video streaming app.')
-    parser.add_argument('--link-bw', metavar='link_bw', type=float, nargs='?', default=10,
-                        help='initial bandwidth of the link connecting the two switches in the topology (the bandwidth '
-                             'is defined in Mbit/s).')
-    parser.add_argument('--link-delay', metavar='link_delay', type=float, nargs='?', default=10,
-                        help='initial delay of the link connecting the two switches in the topology (the delay is '
-                             'defined in ms).')
     parser.add_argument('--autotest', dest='autotest', action='store_const', const=True, default=False,
                         help='test the topology building and close the app.')
     args = parser.parse_args()
 
     # read the command-line arguments
-    bandwidth = max(args.link_bw, 0.000001)
-    delay = max(args.link_delay, 0)
+    bandwidth = 10
+    delay = 5
     autotest = args.autotest
 
     # create the directory that will be shared with the services docker containers
@@ -136,9 +109,6 @@ if __name__ == '__main__':
         server_thread.join()
         client_thread.join()
 
-        # open a terminal on the streaming service containers (both server and client)
-        #spawnXtermDocker('streaming_server')
-        #spawnXtermDocker('streaming_client')
 
         # let the user choose the next operation
         choice = ''
