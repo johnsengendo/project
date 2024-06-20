@@ -23,10 +23,10 @@ RUN apt-get -qy update && \
 COPY tcpdump_utils /home/tcpdump_utils
 
 # Copy the script for accessing the streaming and saving the video
-COPY get_video_stream.sh /home/
+COPY get_video_stream_3.py /home/
 
 # Make the scripts executable
-RUN chmod +x /home/get_video_stream.sh /home/tcpdump_utils/*.sh
+RUN chmod +x /home/get_video_stream_3.py /home/tcpdump_utils/*.py
 
 # Default command for docker run
 CMD ["bash"]
