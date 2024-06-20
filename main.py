@@ -64,7 +64,7 @@ if __name__ == '__main__':
     net.start()
     print()
 
-    info("*** Client host pings the server: \n")
+    info("*** Client host pings the server to test for connectivity: \n")
     reply = client.cmd("ping -c 5 10.0.0.1")
     print(reply)
     
