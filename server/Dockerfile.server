@@ -29,7 +29,7 @@ COPY stream_video.sh /home/
 COPY tcpdump_utils /home/tcpdump_utils
 
 # Make the scripts executable
-RUN chmod +x /home/stream_video.sh /home/tcpdump_utils/*.sh
+RUN chmod +x /home/stream_video_6.py /home/tcpdump_utils/*.py
 
 # Copy the sample videos inside the container
 COPY videos /home/videos
