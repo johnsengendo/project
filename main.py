@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # create the directory that will be shared with the services docker containers
     script_dir = os.path.abspath(os.path.join('./', os.path.dirname(sys.argv[0])))
-    shared_dir = os.path.join(script_dir, 'shared')
+    shared_dir = os.path.join(script_dir, 'pcap')
     os.makedirs(shared_dir, exist_ok=True)
 
     # set the logging level
@@ -72,14 +72,14 @@ if __name__ == '__main__':
     streaming_server = mgr.addContainer(
         'streaming_server', 'server', 'video_streaming_server', '', docker_args={
             'volumes': {
-                shared_dir: {'bind': '/home/shared/', 'mode': 'rw'}
+                shared_dir: {'bind': '/home/pcap/', 'mode': 'rw'}
             }
         }
     )
     streaming_client = mgr.addContainer(
         'streaming_client', 'client', 'video_streaming_client', '', docker_args={
             'volumes': {
-                shared_dir: {'bind': '/home/shared/', 'mode': 'rw'}
+                shared_dir: {'bind': '/home/pcap/', 'mode': 'rw'}
             }
         }
     )
