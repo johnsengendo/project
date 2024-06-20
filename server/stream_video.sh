@@ -3,14 +3,14 @@
 # Function to print usage on terminal
 function usage {
     echo "Usage: ./stream_video.sh [-i video] [-o] [-d]"
-    echo "    -i video = input video filepath, with default value 'videos/5G_Smart_Networks_Digital_Twin.mp4'"
+    echo "    -i video = input video filepath, with default value 'videos/big_buck_bunny_720p_5mb.mp4'"
     echo "    -o = stream the video once, without looping on it (the default behaviour is an infinite loop)"
     echo "    -d = disable the capture of the video stream outgoing packets through tcpdump (the capture is
                    enabled by default, with output file 'pcap/server_out.pcap')"
 }
 
 # Parse the script arguments
-video="videos/5G_Smart_Networks_Digital_Twin.mp4"
+video="videos/big_buck_bunny_720p_5mb.mp4"
 loops_number=-1
 capture_traffic="true"
 while getopts 'i:odh' OPTION; do
