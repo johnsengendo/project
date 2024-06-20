@@ -43,7 +43,7 @@ if [ ${capture_traffic} == "true" ]; then
 fi
 
 # Stream the specified video
-ffmpeg -loglevel info -stats -re -stream_loop "${loops_number}" -i "${video}" -t 5 -c:v copy -c:a aac -ar 44100 -ac 1 \
+ffmpeg -loglevel info -stats -re -stream_loop "${loops_number}" -i "${video}" -t 10 -c:v copy -c:a aac -ar 44100 -ac 1 \
        -f flv rtmp://localhost:1935/live/video.flv
 
 # Stop tcpdump capture, if required
