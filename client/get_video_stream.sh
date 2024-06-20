@@ -6,7 +6,7 @@ function usage {
     echo "    -o stream_output_filename = name of the (.flv) output file without extension (the default value
                                           is 'stream_output')"
     echo "    -d = disable the capture of the video stream incoming packets through tcpdump (the capture is
-                   enabled by default, with output file 'shared/client_out.pcap')"
+                   enabled by default, with output file 'pcap/client_out.pcap')"
 }
 
 # Parse the script arguments
