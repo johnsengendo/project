@@ -5,10 +5,10 @@ import os
 import time
 
 def start_capture():
-    subprocess.Popen(["./tcpdump_utils/start_capture_client.sh"])
+    subprocess.Popen(["./tcpdump_utils/start_capture_client_2.py"])
 
 def stop_capture():
-    subprocess.run(["./tcpdump_utils/stop_capture.sh"])
+    subprocess.run(["./tcpdump_utils/stop_capture_1.py"])
     time.sleep(3)
 
 def main():
