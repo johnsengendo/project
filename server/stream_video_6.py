@@ -7,7 +7,7 @@ def start_capture():
     subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "server-eth0", "src", "port", "1935", "-w", "pcap/server_out.pcap"])
 
 def stop_capture():
-    subprocess.run(["./tcpdump_utils/stop_capture.sh"])
+    subprocess.run(["./tcpdump_utils/stop_capture_1.py"])
     subprocess.sleep(3)
 
 def main():
