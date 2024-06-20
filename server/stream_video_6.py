@@ -3,13 +3,13 @@
 import subprocess
 import argparse
 import os
-
+import time
 def start_capture():
     subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "server-eth0", "src", "port", "1935", "-w", "pcap/server_out.pcap"])
 
 def stop_capture():
     subprocess.run(["./tcpdump_utils/stop_capture_1.py"])
-    subprocess.sleep(3)
+    time.sleep(3)
 
 def main():
     parser = argparse.ArgumentParser(description='Stream video using ffmpeg with optional capture of outgoing packets.')
@@ -23,7 +23,7 @@ def main():
 
     if capture_traffic:
         start_capture()
-        subprocess.sleep(2)
+        time.sleep(2)
 
     ffmpeg_command = [
         "ffmpeg", "-loglevel", "info", "-stats", "-re", "-stream_loop", str(loops_number), "-i", args.input,
