@@ -14,7 +14,7 @@ def start_capture():
     on source port 1935 and writing them to a pcap file. This is used to
     capture network traffic associated with the video streaming.
     """
-    subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "server-eth0", "src", "port", "1935", "-w", "pcap/server_out.pcap"])
+    subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "server-eth0", "src", "port", "1935", "-w", "pcap/server.pcap"])
 
 def stop_capture():
     """
