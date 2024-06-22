@@ -1,25 +1,14 @@
 FROM ubuntu:20.04
 
 # Install useful tools
-RUN apt-get -qy update && \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-	bash \
-        python3 \
-        # python3-pip \
-	bash-completion \
-	curl \
-	iperf \
-	iperf3 \
-	iproute2 \
-	iputils-ping \
-	net-tools
+# Copy the script that installs packages
+COPY install_packages.sh /home/
 
-# Install the packages required for accessing the video streaming and dumping the traffic (plus a text editor)
-RUN apt-get -qy update && \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y \
-	ffmpeg \
-	tcpdump \
-	nano
+# Make the script executable
+RUN chmod +x /home/install_packages.sh
+
+# Run the script to install packages
+RUN /home/install_packages.sh
 
 # Copy the script for accessing the streaming and saving the video
 COPY get_video_streamed.py /home/
