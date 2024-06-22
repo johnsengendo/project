@@ -5,4 +5,4 @@ To run the script, I first set up the client host and the server host, and withi
 To run the script, I have the topology.py script which sets up the topology. With in this script, I set-up the hosts which are connected by 2 sitches. 
 Further more, the script calls for the building of the images, and further, video streaming is performed.
 
-![Alt Text](image_url)
+![Alt Text](https://github.com/johnsengendo/Project/blob/main/Topology/Topology.png)
