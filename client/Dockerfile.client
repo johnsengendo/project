@@ -22,7 +22,7 @@ RUN apt-get -qy update && \
 	nano
 
 # Copy the script for accessing the streaming and saving the video
-COPY get_video_streamed.py
+COPY get_video_streamed.py /home/
 
 # Make the scripts executable
 RUN chmod +x /home/get_video_streamed.py
