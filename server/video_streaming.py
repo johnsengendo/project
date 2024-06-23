@@ -32,8 +32,7 @@ def main():
     """
     Main function to handle video streaming with optional packet capture.
     """
-    # Hardcoded values
-    input_file = "videos/big_buck_bunny_720p_5mb.mp4"
+    input_file = "videos/road_street.mp4"
     loops_number = 0  # Stream the video once, without looping
     capture_traffic = True
 
