@@ -45,6 +45,5 @@ def get_video_stream():
         stop_capture() # Stopping the capturing
 
 
-
 if __name__ == "__main__":
     get_video_stream()
