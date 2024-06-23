@@ -1,25 +1,24 @@
 FROM tiangolo/nginx-rtmp:latest
 
-# Override the default nginx configuration file
+# Overriding the default nginx configuration file
 COPY config/nginx.conf /etc/nginx/nginx.conf
 
-# Install useful tools
-# Copy the script that installs packages
+# Copying the script that installs packages
 COPY install_packages.sh /home/
 
-# Make the script executable
+# Making the installation script executable
 RUN chmod +x /home/install_packages.sh
 
-# Run the script to install packages
+# Running the script to install packages
 RUN /home/install_packages.sh
 
-# Copy the script that allows streaming videos
+# Copying the video streaming script
 COPY video_streaming.py /home/
 
-# Make the scripts executable
+# Making the video streaming script executable
 RUN chmod +x /home/video_streaming.py
 
-# Copy the sample videos inside the container
+# Copying the sample video
 COPY videos /home/videos
 
 # Default configuration for docker run taken from tiangolo/nginx-rtmp
