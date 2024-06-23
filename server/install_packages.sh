@@ -13,7 +13,7 @@ apt-get install -y --no-install-recommends \
     iputils-ping \
     net-tools
 
-# Installing the packages required for streaming videos and dumping traffic (plus a text editor, useful for debugging)
+# Installing the packages required for streaming videos and dumping traffic.
 apt-get install -y \
     ffmpeg \
     tcpdump \
