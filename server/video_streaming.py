@@ -3,7 +3,6 @@
 
 # Importing necessary libraries
 import subprocess
-import argparse
 import os
 import time
 import signal 
@@ -30,33 +29,27 @@ def stop_capture():
             break
 
 def main():
-
     """
-    Main function to handle video streaming with optional packet capture. Uses argparse
-    to manage command-line arguments.
+    Main function to handle video streaming with optional packet capture.
     """
-    parser = argparse.ArgumentParser(description='Stream video using ffmpeg with optional capture of outgoing packets.')
-    parser.add_argument('-i', '--input', default='videos/big_buck_bunny_720p_5mb.mp4', help='Input video filepath')
-    parser.add_argument('-o', '--once', action='store_true', help='Stream the video once, without looping')
-    parser.add_argument('-d', '--disable-capture', action='store_true', help='Disable the capture of outgoing packets')
-    args = parser.parse_args()
-    
-    capture_traffic = not args.disable_capture
-    loops_number = 0 if args.once else -1 # Looping indefinitely unless '-o' option is used
+    # Hardcoded values
+    input_file = "videos/big_buck_bunny_720p_5mb.mp4"
+    loops_number = 0  # Stream the video once, without looping
+    capture_traffic = True
 
     if capture_traffic:
-        start_capture() # Begining packet capturing
+        start_capture()  # Begining packet capturing
         time.sleep(2)   # Short delay to ensure capturing starts before streaming
 
     ffmpeg_command = [
-        "ffmpeg", "-loglevel", "info", "-stats", "-re", "-stream_loop", str(loops_number), "-i", args.input,
+        "ffmpeg", "-loglevel", "info", "-stats", "-re", "-stream_loop", str(loops_number), "-i", input_file,
         "-t", "10", "-c:v", "copy", "-c:a", "aac", "-ar", "44100", "-ac", "1",
         "-f", "flv", "rtmp://localhost:1935/live/video.flv"
     ]
-    subprocess.run(ffmpeg_command) # Running ffmpeg command to stream video
+    subprocess.run(ffmpeg_command)  # Running ffmpeg command to stream video
 
     if capture_traffic:
-        stop_capture() # Stopping packet capturing after streaming is done
+        stop_capture()  # Stopping packet capturing after streaming is done
 
 if __name__ == "__main__":
     main()
