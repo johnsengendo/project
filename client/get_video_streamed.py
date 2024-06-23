@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
-import argparse
 import os
 import signal
 import time
@@ -28,13 +27,8 @@ def get_video_stream():
     """
     Main function to handle video streaming.
     """
-    parser = argparse.ArgumentParser(description='Get and save video stream with optional capture of incoming packets.')
-    parser.add_argument('-o', '--output', default='stream_output', help='Output filename for the stream (.flv) without extension')
-    parser.add_argument('-d', '--disable-capture', action='store_true', help='Disable the capture of incoming packets')
-    args = parser.parse_args()
-    
-    out_file = f"{args.output}.flv"
-    capture_traffic = not args.disable_capture
+    out_file = "stream_output.flv"
+    capture_traffic = True
 
     if capture_traffic:
         start_capture() # Starting to capture traffic
@@ -47,10 +41,9 @@ def get_video_stream():
     ]
     subprocess.run(ffmpeg_command)
 
-    #run_time = time.time() - start_time
-
     if capture_traffic:
         stop_capture() # Stopping the capturing
+
 
 
 if __name__ == "__main__":
