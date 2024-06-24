@@ -19,4 +19,4 @@ apt-get install -y \
     tcpdump \
     vlc \
     nano
-pip3 install python-vlc
+#pip3 install python-vlc
