@@ -5,7 +5,6 @@ import subprocess
 import os
 import signal
 import time
-import vlc
 
 def start_capture():
     """
@@ -32,24 +31,20 @@ def get_video_stream():
     capture_traffic = True
 
     if capture_traffic:
-        start_capture()  # Start capturing traffic
-        time.sleep(2)    # Ensure capture starts before streaming begins
+        start_capture() # Starting to capture traffic
+        time.sleep(2)
 
-    # Set up VLC to receive the stream and save it to a file
-    instance = vlc.Instance()
-    player = instance.media_player_new()
-    media = instance.media_new("rtmp://10.0.0.1:1935/live/video.flv", ":sout=#std{access=file,mux=flv,dst='%s'}" % out_file)
-    media.get_mrl()
-    player.set_media(media)
-
-    # Play the media to start the receiving and saving process
-    player.play()
-    # Let's say we stream for 10 seconds as specified in the ffmpeg command
-    time.sleep(10)
-    player.stop()
+    start_time = time.time()
+    ffmpeg_command = [
+        "ffmpeg", "-loglevel", "info", "-stats", "-i", "rtmp://10.0.0.1:1935/live/video.flv",
+        "-t", "10", "-probesize", "80000", "-analyzeduration", "15", "-c:a", "copy", "-c:v", "copy", out_file
+    ]
+    subprocess.run(ffmpeg_command)
 
     if capture_traffic:
-        stop_capture()  # Stop the capturing after streaming
+        stop_capture() # Stopping the capturing
+
+
 
 if __name__ == "__main__":
     get_video_stream()
