@@ -17,4 +17,6 @@ apt-get install -y --no-install-recommends \
 apt-get install -y \
     ffmpeg \
     tcpdump \
-    nano
+    vlc \
+    nano 
+pip3 install python-vlc
