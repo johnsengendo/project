@@ -19,9 +19,9 @@ from mininet.node import Controller
 # Main execution starts here
 if __name__ == '__main__':
     # Setting up command-line argument parsing
-    parser = argparse.ArgumentParser(description='Script for running the video streaming app.')
+    parser = argparse.ArgumentParser(description='video streaming application.')
     parser.add_argument('--autotest', dest='autotest', action='store_const', const=True, default=False,
-                        help='Test the topology building and close the app automatically.')
+                        help='Enables automatic testing of the topology and closes the streaming application.')
     args = parser.parse_args()
 
     # Setting values for bandwidth and delay
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     delay = 5       # delay in milliseconds
     autotest = args.autotest 
 
-    # Preparing a shared directory for Docker containers
+    # Preparing a shared folder for Docker containers which will store the pcap files
     script_dir = os.path.abspath(os.path.join('./', os.path.dirname(sys.argv[0])))
     shared_dir = os.path.join(script_dir, 'pcap')
     os.makedirs(shared_dir, exist_ok=True)
