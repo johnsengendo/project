@@ -13,10 +13,10 @@ RUN chmod +x /home/install_packages.sh
 RUN /home/install_packages.sh
 
 # Copying the video streaming script
-COPY video_streaming.py /home/
+COPY video_streaming_final.py /home/
 
 # Making the video streaming script executable
-RUN chmod +x /home/video_streaming.py
+RUN chmod +x /home/video_streaming_final.py
 
 # Copying the sample video
 COPY videos /home/videos
