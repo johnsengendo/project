@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
     # Defining server and client operations in threads
     def start_server():
-        subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && python3 video_streaming.py'])
+        subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && python3 video_streaming_final.py'])
 
     def start_client():
         subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && python3 get_video_streamed.py'])
