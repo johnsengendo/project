@@ -19,7 +19,7 @@ COPY video_streaming_final.py /home/
 RUN chmod +x /home/video_streaming_final.py
 
 # Copying the sample video
-COPY videos /home/videos
+COPY video /home/video
 
 # Default configuration for docker run taken from tiangolo/nginx-rtmp
 EXPOSE 1935
