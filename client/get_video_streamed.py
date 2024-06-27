@@ -13,7 +13,7 @@ def start_capture():
     proc = subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "client-eth0", "src", "port", "1935", "-w", "pcap/client.pcap"])
     return proc.pid
 
-def stop_capture():
+def stop_capture(pid):
     """
     Stopping the tcpdump process gracefully by sending a SIGINT signal.
     """
