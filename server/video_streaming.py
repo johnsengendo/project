@@ -37,7 +37,7 @@ def main():
     capture_traffic = True
 
     if capture_traffic:
-        PID = start_capture()  # Begining packet capturing
+        pid = start_capture()  # Begining packet capturing
         time.sleep(2)   # Short delay to ensure capturing starts before streaming
 
     ffmpeg_command = [
