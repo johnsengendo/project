@@ -14,6 +14,7 @@ def start_capture():
     capture network traffic associated with the video streaming.
     """
     subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "server-eth0", "src", "port", "1935", "-w", "pcap/server.pcap"])
+    return proc.pid
 
 def stop_capture():
     """
@@ -21,12 +22,11 @@ def stop_capture():
     the process list, identifies the tcpdump process, and sends a SIGINT signal to
     terminate it.
     """
-    ps_output = subprocess.check_output(['ps', '-e']).decode('utf-8')
-    for line in ps_output.splitlines():
-        if 'tcpdump' in line:
-            pid = int(line.split()[0])
-            os.kill(pid, signal.SIGINT)
-            break
+    try:
+        os.kill(pid, signal.SIGINT)
+        print("Capture stopped successfully.")
+    except OSError as e:
+        print(f"Error stopping capture: {e}")
 
 def main():
     """
@@ -37,7 +37,7 @@ def main():
     capture_traffic = True
 
     if capture_traffic:
-        start_capture()  # Begining packet capturing
+        PID = start_capture()  # Begining packet capturing
         time.sleep(2)   # Short delay to ensure capturing starts before streaming
 
     ffmpeg_command = [
@@ -48,7 +48,7 @@ def main():
     subprocess.run(ffmpeg_command)  # Running ffmpeg command to stream video
 
     if capture_traffic:
-        stop_capture()  # Stopping packet capturing after streaming is done
+        stop_capture(pid)  # Stopping packet capturing after streaming is done
 
 if __name__ == "__main__":
     main()
