@@ -10,7 +10,7 @@ def start_capture():
     """
     Starting capturing network traffic using tcpdump.
     """
-    subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "client-eth0", "src", "port", "1935", "-w", "pcap/client.pcap"])
+    proc = subprocess.Popen(["tcpdump", "-U", "-s0", "-i", "client-eth0", "src", "port", "1935", "-w", "pcap/client.pcap"])
     return proc.pid
 
 def stop_capture():
