@@ -6,3 +6,17 @@ To run the script, I have the Topology.py script which sets up the topology. Wit
 Further more, the script calls for the building of the images, and further, video streaming is performed.
 
 ![Alt Text](https://github.com/johnsengendo/Project/blob/main/Topology/Topology.png)
+
+## Steps to Run the Simulation
+
+1. **Run the `clean.sh` file**
+   ```bash
+   ./clean.sh
+
+2. **Run the `build_docker_images.sh` file**
+   ```bash
+   ./build_docker_images.sh
+
+3. **Run the `Topology.py` file**
+   ```bash
+   sudo python3 Topology.py
