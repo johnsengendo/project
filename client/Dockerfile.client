@@ -12,7 +12,7 @@ RUN /home/install_packages.sh
 # Copying the get_video_streamed script
 COPY get_video_streamed.py /home/
 
-# Making the script executable
+# Changing the permissions of the script to make it executable
 RUN chmod +x /home/get_video_streamed.py
 
 CMD ["bash"]
