@@ -9,8 +9,6 @@ apt-get install -y --no-install-recommends \
     python3 \
     bash-completion \
     curl \
-    iproute2 \
-    iputils-ping \
     net-tools
 
 # Installing the packages required for streaming videos and dumping traffic (plus a text editor, useful for debugging)
