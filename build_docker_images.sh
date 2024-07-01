@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Building docker image for server streaming"
-docker build -t video_streaming_server --file ./server/Dockerfile.server ./server
+docker build -t streaming_server_image --file ./server/Dockerfile.server ./server
 
 echo "Building docker image for client streaming"
-docker build -t video_streaming_client --file ./client/Dockerfile.client ./client
+docker build -t streaming_client_image --file ./client/Dockerfile.client ./client
