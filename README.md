@@ -7,7 +7,7 @@ To run the script, I first set up the client host and the server host. Within th
 
 ![Alt Text](https://github.com/johnsengendo/Project/blob/main/Topology/Topology.png)
 
-## Steps to Run the Simulation
+## Steps to Run the simulation
 
 1. **Run the `clean.sh` file**
    ```bash
