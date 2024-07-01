@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 # Copying the script that installs necessary packages into the docker image
 COPY install_packages.sh /home/
 
-# Making the script executable
+# Changing the permissions of the install_packages.sh script to make it executable
 RUN chmod +x /home/install_packages.sh
 
 # Running the script to install packages
