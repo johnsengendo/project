@@ -32,10 +32,10 @@ if __name__ == '__main__':
     # Preparing a shared folder to store the pcap files
     script_directory = os.path.abspath(os.path.dirname(__file__))
 
-    # Define the shared directory path
+    # Defining the shared directory path
     shared_directory = os.path.join(script_directory, 'pcap')
 
-    # Create the shared directory if it doesn't exist
+    # Creating the shared directory if it doesn't exist
     if not os.path.exists(shared_directory):
         os.makedirs(shared_directory)
     
