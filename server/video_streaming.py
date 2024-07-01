@@ -41,7 +41,6 @@ def main():
         time.sleep(2)   # Short delay to ensure capturing starts before streaming
 
     ffmpeg_options = {
-        "-loglevel": "info",
         "-stats": None,
         "-re": None, 
         "-stream_loop": str(loops_number),
@@ -54,7 +53,7 @@ def main():
         "-f": "flv"
     }
 
-    ffmpeg_command = ["ffmpeg"] + [k + (" " + v if v else "") for k, v in ffmpeg_options.items()] + ["rtmp://localhost:1935/live/video.flv"]
+    ffmpeg_command = ["ffmpeg", "-loglevel", "info"] + [k + (" " + v if v else "") for k, v in ffmpeg_options.items()] + ["rtmp://localhost:1935/live/video.flv"]
     subprocess.run(ffmpeg_command)  # Running ffmpeg command to stream video
 
     if capture_traffic:
