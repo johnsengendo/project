@@ -1,6 +1,5 @@
 FROM ubuntu:20.04
 
-# Installing useful tools
 # Copying the script that installs packages
 COPY install_packages.sh /home/
 
@@ -16,5 +15,4 @@ COPY get_video_streamed.py /home/
 # Making the script executable
 RUN chmod +x /home/get_video_streamed.py
 
-# Default command for docker run
 CMD ["bash"]
