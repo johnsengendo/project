@@ -20,3 +20,7 @@ To run the script, I first set up the client host and the server host. Within th
 3. **Run the `Topology.py` file**
    ```bash
    sudo python3 Topology.py
+
+**Below is a sample of the pcap file captured at the client side during streamimg which lasted for 10 seconds**
+
+![Alt Text](https://github.com/johnsengendo/Project/blob/main/Topology/Topology.png)
