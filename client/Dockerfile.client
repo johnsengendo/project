@@ -6,10 +6,10 @@ COPY install_packages.sh /home/
 # Changing the permissions of the install_packages.sh script to make it executable
 RUN chmod +x /home/install_packages.sh
 
-# Running the script to install packages
+# Executing the install_packages.sh script to install necessary packages
 RUN /home/install_packages.sh
 
-# Copying the get_video_streamed script
+# Copying the get_video_streamed script into the docker image
 COPY get_video_streamed.py /home/
 
 # Changing the permissions of the script to make it executable
