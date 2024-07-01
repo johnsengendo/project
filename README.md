@@ -23,4 +23,4 @@ To run the script, I first set up the client host and the server host. Within th
 
 **Below is a sample of the pcap file captured at the client side during streamimg which lasted for 10 seconds**
 
-![Alt Text](https://github.com/johnsengendo/Project/blob/main/Topology/Topology.png)
+![Alt Text](https://github.com/johnsengendo/Video_server/blob/main/images/Screenshot%202024-07-01%20131138.png)
