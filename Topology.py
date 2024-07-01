@@ -29,11 +29,16 @@ if __name__ == '__main__':
     delay = 5       # delay in milliseconds
     autotest = args.autotest 
 
-    # Preparing a shared folder for Docker containers which will store the pcap files
-    script_dir = os.path.abspath(os.path.join('./', os.path.dirname(sys.argv[0])))
-    shared_dir = os.path.join(script_dir, 'pcap')
-    os.makedirs(shared_dir, exist_ok=True)
+    # Preparing a shared folder to store the pcap files
+    script_directory = os.path.abspath(os.path.dirname(__file__))
 
+    # Define the shared directory path
+    shared_directory = os.path.join(script_directory, 'pcap')
+
+    # Create the shared directory if it doesn't exist
+    if not os.path.exists(shared_directory):
+        os.makedirs(shared_directory)
+    
     # Configuring the logging level
     setLogLevel('info')
 
@@ -75,14 +80,14 @@ if __name__ == '__main__':
     streaming_server = mgr.addContainer(
         'streaming_server', 'server', 'video_streaming_server', '', docker_args={
             'volumes': {
-                shared_dir: {'bind': '/home/pcap/', 'mode': 'rw'}
+                shared_directory: {'bind': '/home/pcap/', 'mode': 'rw'}
             }
         }
     )
     streaming_client = mgr.addContainer(
         'streaming_client', 'client', 'video_streaming_client', '', docker_args={
             'volumes': {
-                shared_dir: {'bind': '/home/pcap/', 'mode': 'rw'}
+                shared_directory: {'bind': '/home/pcap/', 'mode': 'rw'}
             }
         }
     )
