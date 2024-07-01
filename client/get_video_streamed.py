@@ -36,7 +36,6 @@ def get_video_stream():
 
 
     ffmpeg_options = {
-        "-loglevel": "info",
         "-stats": None, 
         "-i": "rtmp://10.0.0.1:1935/live/video.flv",
         "-t": "10",
@@ -46,7 +45,7 @@ def get_video_stream():
         "-c:v": "copy"
     }
 
-    ffmpeg_command = ["ffmpeg"] + [k + (" " + v if v else "") for k, v in ffmpeg_options.items()] + [out_file]
+    ffmpeg_command = ["ffmpeg", "-loglevel", "info"] + [k + (" " + v if v else "") for k, v in ffmpeg_options.items()] + [out_file]
     subprocess.run(ffmpeg_command)
 
     if capture_traffic:
