@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-# Copying the script that installs packages
+# Copying the script that installs necessary packages into the docker image
 COPY install_packages.sh /home/
 
 # Making the script executable
