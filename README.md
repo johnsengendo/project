@@ -7,7 +7,7 @@ To run the script, I first set up the client host and the server host. Within th
 
 ![Alt Text](https://github.com/johnsengendo/Video_server/blob/main/images/Screenshot%202024-07-02%20100131.png)
 
-## Steps to run the simulation
+## Steps to run the topology
 
 1. **Run the `clean.sh` file** Which helps clear the Mininet network and also remove any existing containers.
    ```bash
