@@ -32,8 +32,8 @@ def main():
     """
     Main function to handle video streaming with optional packet capture.
     """
-    input_file = "video/marvel.mp4"
-    loops_number = 1  # Stream the video once, without looping
+    input_file = "video/Deadpool.mp4"
+    loops_number = 0  # Stream the video once, without looping
     capture_traffic = True
 
     if capture_traffic:
@@ -42,7 +42,7 @@ def main():
 
     ffmpeg_command = [
         "ffmpeg", "-loglevel", "info", "-stats", "-re", "-stream_loop", str(loops_number), "-i", input_file,
-        "-t", "30", "-c:v", "copy", "-c:a", "aac", "-ar", "44100", "-ac", "1",
+        "-t", "120", "-c:v", "copy", "-c:a", "aac", "-ar", "44100", "-ac", "1",
         "-f", "flv", "rtmp://localhost:1935/live/video.flv"
     ]
     subprocess.run(ffmpeg_command)  # Running ffmpeg command to stream video
