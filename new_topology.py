@@ -85,8 +85,8 @@ if __name__ == '__main__':
     # Run the streaming process 20 times with varying conditions
     for i in range(20):
         # Randomize bandwidth and delay for each run
-        bandwidth = random.choice([5, 10, 20, 50, 100])  # bandwidth in Mbps
-        delay = random.choice([5, 10, 20, 50, 100])       # delay in milliseconds
+        bandwidth = random.choice([5, 10])  # bandwidth in Mbps
+        delay = random.choice([5, 10])       # delay in milliseconds
 
         info(f"*** Iteration {i+1}: Setting bandwidth to {bandwidth} Mbps and delay to {delay} ms\n")
 
