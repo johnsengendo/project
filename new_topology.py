@@ -83,10 +83,10 @@ if __name__ == '__main__':
     streaming_client = add_streaming_container(mgr, 'streaming_client', 'client', 'streaming_client_image', shared_directory)
 
     # Run the streaming process 20 times with varying conditions
-    for i in range(2):
+    for i in range(1):
         # Randomize bandwidth and delay for each run
-        bandwidth = random.choice([5, 10])  # bandwidth in Mbps
-        delay = random.choice([5, 10])       # delay in milliseconds
+        bandwidth = random.choice([10])  # bandwidth in Mbps
+        delay = random.choice([5])       # delay in milliseconds
 
         info(f"*** Iteration {i+1}: Setting bandwidth to {bandwidth} Mbps and delay to {delay} ms\n")
 
