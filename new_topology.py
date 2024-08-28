@@ -7,7 +7,6 @@ import subprocess
 import sys
 import time
 import threading
-import random
 
 from comnetsemu.cli import CLI, spawnXtermDocker
 from comnetsemu.net import Containernet, VNFManager
@@ -67,8 +66,8 @@ if __name__ == '__main__':
     info('*** Adding switches and links\n')
     switch1 = net.addSwitch('s1')
     switch2 = net.addSwitch('s2')
-
     net.addLink(switch1, server)
+    middle_link = net.addLink(switch1, switch2, bw=10, delay='5ms')
     net.addLink(switch2, client)
 
     info('\n*** Starting network\n')
@@ -82,31 +81,16 @@ if __name__ == '__main__':
     streaming_server = add_streaming_container(mgr, 'streaming_server', 'server', 'streaming_server_image', shared_directory)
     streaming_client = add_streaming_container(mgr, 'streaming_client', 'client', 'streaming_client_image', shared_directory)
 
-    # Randomize bandwidth and delay for the run
-    bandwidth = random.choice([10])  # bandwidth in Mbps
-    delay = random.choice([5])       # delay in milliseconds
-
-    info(f"*** Setting bandwidth to {bandwidth} Mbps and delay to {delay} ms\n")
-
-    # Reconfigure the middle link with new parameters
-    middle_link = net.addLink(switch1, switch2, bw=bandwidth, delay=f'{delay}ms')
-
-    # Start server and client threads with additional delays
+    # Start server and client threads
     server_thread = threading.Thread(target=start_server)
     client_thread = threading.Thread(target=start_client)
 
     info("*** Starting server and client\n")
     server_thread.start()
-    time.sleep(5)  # Wait to ensure the server is ready
-
     client_thread.start()
-    time.sleep(5)  # Wait before stopping
 
     server_thread.join()
     client_thread.join()
-
-    info("*** Removing the middle link\n")
-    net.delLinkBetween(switch1, switch2)
 
     if not args.autotest:
         CLI(net)
