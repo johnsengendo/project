@@ -82,29 +82,31 @@ if __name__ == '__main__':
     streaming_server = add_streaming_container(mgr, 'streaming_server', 'server', 'streaming_server_image', shared_directory)
     streaming_client = add_streaming_container(mgr, 'streaming_client', 'client', 'streaming_client_image', shared_directory)
 
-    # Run the streaming process 20 times with varying conditions
-    for i in range(1):
-        # Randomize bandwidth and delay for each run
-        bandwidth = random.choice([10])  # bandwidth in Mbps
-        delay = random.choice([5])       # delay in milliseconds
+    # Randomize bandwidth and delay for the run
+    bandwidth = random.choice([10])  # bandwidth in Mbps
+    delay = random.choice([5])       # delay in milliseconds
 
-        info(f"*** Iteration {i+1}: Setting bandwidth to {bandwidth} Mbps and delay to {delay} ms\n")
+    info(f"*** Setting bandwidth to {bandwidth} Mbps and delay to {delay} ms\n")
 
-        # Reconfigure the middle link with new parameters
-        middle_link = net.addLink(switch1, switch2, bw=bandwidth, delay=f'{delay}ms')
+    # Reconfigure the middle link with new parameters
+    middle_link = net.addLink(switch1, switch2, bw=bandwidth, delay=f'{delay}ms')
 
-        # Start server and client threads
-        server_thread = threading.Thread(target=start_server)
-        client_thread = threading.Thread(target=start_client)
+    # Start server and client threads with additional delays
+    server_thread = threading.Thread(target=start_server)
+    client_thread = threading.Thread(target=start_client)
 
-        server_thread.start()
-        client_thread.start()
+    info("*** Starting server and client\n")
+    server_thread.start()
+    time.sleep(5)  # Wait to ensure the server is ready
 
-        server_thread.join()
-        client_thread.join()
+    client_thread.start()
+    time.sleep(5)  # Wait before stopping
 
-        # Remove the middle link for the next iteration
-        net.delLinkBetween(switch1, switch2)
+    server_thread.join()
+    client_thread.join()
+
+    info("*** Removing the middle link\n")
+    net.delLinkBetween(switch1, switch2)
 
     if not args.autotest:
         CLI(net)
