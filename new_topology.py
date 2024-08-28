@@ -4,11 +4,10 @@
 import argparse
 import os
 import subprocess
-import sys
-import time
 import threading
+import time
 
-from comnetsemu.cli import CLI, spawnXtermDocker
+from comnetsemu.cli import CLI
 from comnetsemu.net import Containernet, VNFManager
 from mininet.link import TCLink
 from mininet.log import info, setLogLevel
@@ -81,16 +80,34 @@ if __name__ == '__main__':
     streaming_server = add_streaming_container(mgr, 'streaming_server', 'server', 'streaming_server_image', shared_directory)
     streaming_client = add_streaming_container(mgr, 'streaming_client', 'client', 'streaming_client_image', shared_directory)
 
-    # Start server and client threads
-    server_thread = threading.Thread(target=start_server)
-    client_thread = threading.Thread(target=start_client)
+    # Define bandwidth and delay settings
+    link_configs = [
+        {'bw': 10, 'delay': '5ms'},
+        {'bw': 8, 'delay': '6ms'}
+    ]
 
-    info("*** Starting server and client\n")
-    server_thread.start()
-    client_thread.start()
+    for idx, config in enumerate(link_configs):
+        info(f"*** Starting streaming iteration {idx+1} with bandwidth {config['bw']} Mbps and delay {config['delay']}\n")
 
-    server_thread.join()
-    client_thread.join()
+        # Configure the middle link with current settings
+        middle_link.intf1.config(bw=config['bw'], delay=config['delay'])
+        middle_link.intf2.config(bw=config['bw'], delay=config['delay'])
+
+        # Start server and client threads
+        server_thread = threading.Thread(target=start_server)
+        client_thread = threading.Thread(target=start_client)
+
+        info(f"*** Streaming with bandwidth {config['bw']} Mbps and delay {config['delay']}\n")
+        server_thread.start()
+        client_thread.start()
+
+        # Wait for the streaming to complete
+        server_thread.join()
+        client_thread.join()
+
+        # Capture packets and wait a bit before the next iteration
+        info("*** Sleeping before next configuration...\n")
+        time.sleep(5)
 
     if not args.autotest:
         CLI(net)
