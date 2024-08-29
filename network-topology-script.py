@@ -27,7 +27,7 @@ def start_server():
     subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && python3 video-streaming-server-script.py'])
 
 def start_client():
-    subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && python3 get_video_streamed.py'])
+    subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && python3 video-streaming-client-script.py'])
 
 def change_link_properties(link, bw, delay):
     info(f'*** Changing bandwidth to {bw} Mbps and delay to {delay} ms\n')
