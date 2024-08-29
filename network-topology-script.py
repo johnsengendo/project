@@ -29,19 +29,24 @@ def start_server():
 def start_client():
     subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && python3 get_video_streamed.py'])
 
-def change_bandwidth(link, new_bw):
-    info(f'*** Changing bandwidth to {new_bw} Mbps\n')
-    link.intf1.config(bw=new_bw)
-    link.intf2.config(bw=new_bw)
+def change_link_properties(link, bw, delay):
+    info(f'*** Changing bandwidth to {bw} Mbps and delay to {delay} ms\n')
+    link.intf1.config(bw=bw, delay=f'{delay}ms')
+    link.intf2.config(bw=bw, delay=f'{delay}ms')
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Video streaming application with dynamic bandwidth.')
+    parser = argparse.ArgumentParser(description='Video streaming application with dynamic bandwidth and delay.')
     parser.add_argument('--autotest', dest='autotest', action='store_true', default=False,
                         help='Enables automatic testing of the topology and closes the streaming application.')
     args = parser.parse_args()
 
-    initial_bandwidth = 10  # initial bandwidth in Mbps
-    delay = 5       # delay in milliseconds
+    # Define 15 bandwidth-delay pairs
+    bw_delay_pairs = [
+        (5, 10), (10, 20), (15, 30), (20, 40), (25, 50),
+        (30, 60), (35, 70), (40, 80), (45, 90), (50, 100),
+        (55, 110), (60, 120), (65, 130), (70, 140), (75, 150)
+    ]
+    
     autotest = args.autotest
 
     script_directory = os.path.abspath(os.path.dirname(__file__))
@@ -66,7 +71,7 @@ if __name__ == '__main__':
     switch1 = net.addSwitch('s1')
     switch2 = net.addSwitch('s2')
     net.addLink(switch1, server)
-    middle_link = net.addLink(switch1, switch2, bw=initial_bandwidth, delay=f'{delay}ms')
+    middle_link = net.addLink(switch1, switch2, bw=bw_delay_pairs[0][0], delay=f'{bw_delay_pairs[0][1]}ms')
     net.addLink(switch2, client)
 
     info('\n*** Starting network\n')
@@ -86,13 +91,10 @@ if __name__ == '__main__':
     time.sleep(2)  # Give the server time to start
     client_thread.start()
 
-    # Change bandwidth after 120 seconds
-    time.sleep(120)
-    change_bandwidth(middle_link, 20)
-
-    # Change bandwidth again after another 120 seconds
-    time.sleep(120)
-    change_bandwidth(middle_link, 30)
+    # Change link properties every 120 seconds
+    for bw, delay in bw_delay_pairs:
+        change_link_properties(middle_link, bw, delay)
+        time.sleep(120)
 
     # Wait for threads to finish
     server_thread.join()
