@@ -87,11 +87,11 @@ if __name__ == '__main__':
     client_thread.start()
 
     # Change bandwidth after 120 seconds
-    time.sleep(120)
+    #time.sleep(120)
     change_bandwidth(middle_link, 20)
 
     # Change bandwidth again after another 120 seconds
-    time.sleep(120)
+    #time.sleep(120)
     change_bandwidth(middle_link, 30)
 
     # Wait for threads to finish
