@@ -27,7 +27,7 @@ def main():
 
     ffmpeg_command = [
         "ffmpeg", "-loglevel", "info", "-stats", "-re", "-stream_loop", str(loops_number), "-i", input_file,
-        "-t", "1800", "-c:v", "copy", "-c:a", "aac", "-ar", "44100", "-ac", "1",
+        "-t", "360", "-c:v", "copy", "-c:a", "aac", "-ar", "44100", "-ac", "1",
         "-f", "flv", "rtmp://localhost:1935/live/video.flv"
     ]
 
