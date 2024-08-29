@@ -18,7 +18,6 @@ def stop_capture(pid):
 
 def get_video_stream():
     out_file = "stream_output.flv"
-    total_duration = 15 * 120  # 15 periods of 120 seconds each
     capture_traffic = True
 
     if capture_traffic:
@@ -27,7 +26,7 @@ def get_video_stream():
 
     ffmpeg_command = [
         "ffmpeg", "-loglevel", "info", "-stats", "-i", "rtmp://10.0.0.1:1935/live/video.flv",
-        "-t", str(total_duration), "-probesize", "80000", "-analyzeduration", "15", "-c:a", "copy", "-c:v", "copy", out_file
+        "-t", "1800", "-probesize", "80000", "-analyzeduration", "15", "-c:a", "copy", "-c:v", "copy", out_file
     ]
 
     subprocess.run(ffmpeg_command)
