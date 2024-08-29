@@ -24,7 +24,7 @@ def add_streaming_container(manager, name, role, image, shared_dir):
     )
 
 def start_server():
-    subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && python3 video_streaming.py'])
+    subprocess.run(['docker', 'exec', '-it', 'streaming_server', 'bash', '-c', 'cd /home && python3 video-streaming-server-script.py'])
 
 def start_client():
     subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && python3 get_video_streamed.py'])
