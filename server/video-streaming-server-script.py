@@ -19,6 +19,7 @@ def stop_capture(pid):
 def main():
     input_file = "video/Deadpool.mp4"
     loops_number = -1  # Stream the video indefinitely
+    total_duration = 15 * 120  # 15 periods of 120 seconds each
     capture_traffic = True
 
     if capture_traffic:
@@ -27,7 +28,7 @@ def main():
 
     ffmpeg_command = [
         "ffmpeg", "-loglevel", "info", "-stats", "-re", "-stream_loop", str(loops_number), "-i", input_file,
-        "-t", "360", "-c:v", "copy", "-c:a", "aac", "-ar", "44100", "-ac", "1",
+        "-t", str(total_duration), "-c:v", "copy", "-c:a", "aac", "-ar", "44100", "-ac", "1",
         "-f", "flv", "rtmp://localhost:1935/live/video.flv"
     ]
 
