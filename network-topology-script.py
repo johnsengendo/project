@@ -86,13 +86,13 @@ if __name__ == '__main__':
     time.sleep(2)  # Give the server time to start
     client_thread.start()
 
-    # Change bandwidth 13 times, with a delay of 120 seconds between each change
-    bandwidth = initial_bandwidth
-    for i in range(13):
-        # Change bandwidth
-        time.sleep(120)
-        bandwidth += 10
-        change_bandwidth(middle_link, bandwidth)
+    # Change bandwidth after 120 seconds
+    time.sleep(120)
+    change_bandwidth(middle_link, 20)
+
+    # Change bandwidth again after another 120 seconds
+    time.sleep(120)
+    change_bandwidth(middle_link, 30)
 
     # Wait for threads to finish
     server_thread.join()
