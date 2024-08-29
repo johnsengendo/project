@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 import argparse
 import os
 import subprocess
 import sys
 import time
 import threading
+
 from comnetsemu.cli import CLI, spawnXtermDocker
 from comnetsemu.net import Containernet, VNFManager
 from mininet.link import TCLink
@@ -41,9 +43,6 @@ if __name__ == '__main__':
     initial_bandwidth = 10  # initial bandwidth in Mbps
     delay = 5       # delay in milliseconds
     autotest = args.autotest
-
-    # Define 15 bandwidth values
-    bandwidth_values = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
 
     script_directory = os.path.abspath(os.path.dirname(__file__))
     shared_directory = os.path.join(script_directory, 'pcap')
@@ -87,10 +86,13 @@ if __name__ == '__main__':
     time.sleep(2)  # Give the server time to start
     client_thread.start()
 
-    # Change bandwidth 15 times
-    for bw in bandwidth_values[1:]:  # Start from the second value as the first is already set
-        time.sleep(120)  # Wait for 120 seconds before changing bandwidth
-        change_bandwidth(middle_link, bw)
+    # Change bandwidth 13 times, with a delay of 120 seconds between each change
+    bandwidth = initial_bandwidth
+    for i in range(13):
+        # Change bandwidth
+        time.sleep(120)
+        bandwidth += 10
+        change_bandwidth(middle_link, bandwidth)
 
     # Wait for threads to finish
     server_thread.join()
