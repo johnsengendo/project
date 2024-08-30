@@ -16,14 +16,8 @@ RUN /home/install_packages.sh
 # Copying the video streaming script into the docker image
 COPY video_streaming.py /home/
 
-# Copying the video streaming script into the docker image
-COPY video-streaming-server-script.py /home/
-
 # Changing the permissions of the video_streaming.py script to make it executable
 RUN chmod +x /home/video_streaming.py
-
-# Changing the permissions of the video_streaming.py script to make it executable
-RUN chmod +x /home/video-streaming-server-script.py
 
 # Copying the sample video into the docker image
 COPY video /home/video
