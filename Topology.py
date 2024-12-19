@@ -34,6 +34,18 @@ def start_server():
 def start_client():
     subprocess.run(['docker', 'exec', '-it', 'streaming_client', 'bash', '-c', 'cd /home && python3 get_video_streamed.py'])
 
+# Function to start iperf server on h6
+def start_iperf_server(host):
+    host.cmd('iperf -s -p 5001 -u &')  # Use UDP for more disruptive traffic
+
+# Function to start iperf client on h3
+def start_iperf_client(host):
+    host.cmd('iperf -c 10.0.0.6 -p 5001 -u -b 100M -t 5 &')  # Use UDP with high bandwidth
+
+# Function to stop iperf client on h3
+def stop_iperf_client(host):
+    host.cmd('pkill iperf')
+
 # Main execution starts here
 if __name__ == '__main__':
     # Setting up command-line argument parsing
@@ -75,13 +87,24 @@ if __name__ == '__main__':
         'client', dimage='dev_test', ip='10.0.0.2', docker_args={'hostname': 'client'}
     )
 
+    # Adding normal hosts
+    h1 = net.addHost('h1', ip='10.0.0.3')
+    h2 = net.addHost('h2', ip='10.0.0.4')
+    h3 = net.addHost('h3', ip='10.0.0.5')
+    h6 = net.addHost('h6', ip='10.0.0.6')
+
     # Adding switches and links to the network
     info('*** Adding switches and links\n')
     switch1 = net.addSwitch('s1')
     switch2 = net.addSwitch('s2')
+
     net.addLink(switch1, server)
-    middle_link = net.addLink(switch1, switch2, bw=bandwidth, delay=f'{delay}ms')
+    net.addLink(switch1, h1)
+    net.addLink(switch1, switch2, bw=bandwidth, delay=f'{delay}ms')
     net.addLink(switch2, client)
+    net.addLink(switch2, h2)
+    net.addLink(switch2, h3)
+    net.addLink(switch2, h6)
 
     # Starting the network
     info('\n*** Starting network\n')
@@ -104,9 +127,25 @@ if __name__ == '__main__':
     server_thread.start()
     client_thread.start()
 
+    # Start iperf server on h6
+    start_iperf_server(h6)
+
+    # Use a timer to start iperf communication between h3 and h6 after 2 seconds
+    def start_iperf_after_delay():
+        time.sleep(2)
+        start_iperf_client(h3)
+        time.sleep(5)
+        stop_iperf_client(h3)
+
+    iperf_thread = threading.Thread(target=start_iperf_after_delay)
+    iperf_thread.start()
+
     # Waiting for the server and client threads to finish
     server_thread.join()
     client_thread.join()
+
+    # Wait for the iperf thread to finish
+    iperf_thread.join()
 
     # If not in autotest mode, start an interactive CLI
     if not autotest:
