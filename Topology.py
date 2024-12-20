@@ -92,6 +92,8 @@ if __name__ == '__main__':
     h2 = net.addHost('h2', ip='10.0.0.4')
     h3 = net.addHost('h3', ip='10.0.0.5')
     h6 = net.addHost('h6', ip='10.0.0.6')
+    h4 = net.addHost('h4', ip='10.0.0.7')
+    h5 = net.addHost('h5', ip='10.0.0.8')
 
     # Adding switches and links to the network
     info('*** Adding switches and links\n')
@@ -103,8 +105,10 @@ if __name__ == '__main__':
     net.addLink(switch1, switch2, bw=bandwidth, delay=f'{delay}ms')
     net.addLink(switch2, client)
     net.addLink(switch2, h2)
-    net.addLink(switch2, h3)
+    net.addLink(switch1, h3)
     net.addLink(switch2, h6)
+    net.addLink(switch1, h4)
+    net.addLink(switch2, h5)
 
     # Starting the network
     info('\n*** Starting network\n')
