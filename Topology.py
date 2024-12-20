@@ -40,7 +40,7 @@ def start_iperf_server(host):
 
 # Function to start iperf client on h3
 def start_iperf_client(host):
-    host.cmd('iperf -c 10.0.0.6 -p 5001 -u -b 100M -t 20 &')  # Use UDP with high bandwidth
+    host.cmd('iperf -c 10.0.0.6 -p 5001 -u -b 5M -t 20 &')  # Use UDP with high bandwidth
 
 # Function to stop iperf client on h3
 def stop_iperf_client(host):
