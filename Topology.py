@@ -40,7 +40,7 @@ def start_iperf_server(host):
 
 # Function to start iperf client on h3
 def start_iperf_client(host):
-    host.cmd('iperf -c 10.0.0.6 -p 5001 -u -b 100M -t 5 &')  # Use UDP with high bandwidth
+    host.cmd('iperf -c 10.0.0.6 -p 5001 -u -b 100M -t 120 &')  # Use UDP with high bandwidth
 
 # Function to stop iperf client on h3
 def stop_iperf_client(host):
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     def start_iperf_after_delay():
         time.sleep(2)
         start_iperf_client(h3)
-        time.sleep(5)
+        time.sleep(120)
         stop_iperf_client(h3)
 
     iperf_thread = threading.Thread(target=start_iperf_after_delay)
