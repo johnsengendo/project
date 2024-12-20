@@ -133,13 +133,16 @@ if __name__ == '__main__':
 
     # Start iperf server on h6
     start_iperf_server(h6)
+    start_iperf_server(h5)
 
     # Use a timer to start iperf communication between h3 and h6 after 2 seconds
     def start_iperf_after_delay():
         time.sleep(2)
         start_iperf_client(h3)
+        start_iperf_client(h4)
         time.sleep(20)
         stop_iperf_client(h3)
+        stop_iperf_client(h4)
 
     iperf_thread = threading.Thread(target=start_iperf_after_delay)
     iperf_thread.start()
